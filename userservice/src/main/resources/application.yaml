@@ -1,0 +1,22 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: userservice
+  cloud:
+    discovery:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tasks
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
+    show-sql: true
+eureka:
+  instance:
+    hostname: localhost

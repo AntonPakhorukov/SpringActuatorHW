@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+eureka:
+  instance:
+    hostname: localhost
+
+spring:
+  application:
+    name: gateway
+  cloud: # cloud и далее можно заменить конфигурацией = SpringCloudConfig
+    gateway:
+      routes:
+        - id: taskservice
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/tasks/**
+          #filters:
+          #  - RewritePath=/tasks/(?<segment>.*)/(?<segment2>.*), /tasks/all
+# Принудительно заменяем запрос /tasks/(?<segment>.*)/(?<segment2>.*) на /tasks/all работает на 8080 порте
+        - id: userservice
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/users/**
+            #- Method=POST # на порт 8082 пойдут все запросы POST

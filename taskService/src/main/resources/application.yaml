@@ -1,0 +1,59 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: taskservice
+  cloud:
+    discovery:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tasks
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
+    show-sql: true
+eureka:
+  instance:
+    hostname: localhost
+
+management:
+# Настройка endpoint'а
+  endpoint: # указываем, что настраиваем конкретный endpoint
+    health: # выбираем endpoint который хотим модифицировать
+      group: # указываем группу
+        custom: # указываем название группы
+          include:
+          - diskSpace
+          - ping # указываем, что хотим включить
+          show-components: always # показывать все компоненты
+          show-details: always # показывать детали
+          status:
+            http-mapping:
+              up: 207 # если все хорошо, будет возвращать статус 207
+
+    prometheus: # Указываем видимость prometheus
+      enabled: true
+  endpoints: # Означает, что принимает ко всем endpoint
+    web:
+      exposure:
+        include: '*'
+  metrics: # Включаем экспорт наших метрик в prometheus
+    export:
+      prometheus:
+        enabled: true
+# Включаем info
+  info:
+    env: # указываем окружении
+      enabled: true # включаем видимость
+
+# Настройка INFO - чтобы работало, нужно включить это в management
+info: # указываем endpoint
+  app: #
+    name: "This is task service" # указываем название сервиса
+    version: 1.0.0 # Указываем версию
+    description: "This task service manages task" # Указываем описание
